@@ -43,4 +43,40 @@ function xScale(data, chosenXAxis) {
   
     return xLinearScale;
   
-  }
+}
+
+// function used for updating xAxis var upon click on axis label
+function renderAxes(newXScale, xAxis) {
+    var bottomAxis = d3.axisBottom(newXScale); // bottomAxis is the final x-axis var
+  
+    xAxis.transition()
+      .duration(1000)
+      .call(bottomAxis);
+  
+    return xAxis;
+}
+
+// function used for updating circles group with a transition to
+// new circles 
+
+function renderCircles(circlesGroup, newXScale, chosenXAxis) {
+
+    circlesGroup.transition()
+      .duration(1000)
+      .attr("cx", d => newXScale(d[chosenXAxis]));
+  
+    return circlesGroup;
+}
+//***line80 on act 12 */
+// function used for updating circles group with new tooltip
+function updateToolTip(chosenXAxis, circlesGroup) {
+
+    var label;
+  
+    if (chosenXAxis === "poverty") {
+      label = "Hair Length:";
+    }
+    else {
+      label = "# of Albums:";
+    }
+  
