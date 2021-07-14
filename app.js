@@ -25,4 +25,22 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 
-  // ****************************************************
+// ****************************************************
+
+// Initial Params
+var chosenXAxis = "poverty";  
+
+// ********* Make poverty the DEFAULT X-AXIS above  ************
+
+// function used for updating x-scale var upon click on axis label
+function xScale(data, chosenXAxis) {
+    // create scales on the x-axis
+    var xLinearScale = d3.scaleLinear()
+      .domain([d3.min(data, d => d[chosenXAxis]) * 0.8,  // setting the left x-axis val to smaller than smallest data point
+        d3.max(data, d => d[chosenXAxis]) * 1.2 // setting the right x-axis val to larger than largest ''
+      ])
+      .range([0, width]);
+  
+    return xLinearScale;
+  
+  }
