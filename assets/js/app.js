@@ -66,7 +66,7 @@ chartGroup.selectAll("circle")
 .append("circle")
 .attr("cx", d=>xScale(d.poverty))
 .attr("cy", d=>yScale(d.healthcare))
-.attr("r", "10")
+.attr("r", "12")
 .attr("stroke-width", "1")
 .classed("stateCircle", true)
 .attr("opacity", 0.75);
@@ -110,3 +110,4 @@ chartGroup.append("text")
   }).catch(function(error) {
   console.log(error);
 });
+
