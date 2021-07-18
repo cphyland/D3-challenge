@@ -27,21 +27,23 @@ var chartGroup = svg.append("g")
 
 // Import and format data 
 
-d3.csv("assets/data/data.csv").then(function(CensusData) {
-  CensusData.forEach(function(data) {
-    data.age = +data.age;
-    data.smokes = +data.smokes;
+d3.csv("assets/data/data.csv").then(function(stateData) {
+  // console.log(stateData);
+
+  stateData.forEach(function(data) {
+    data.poverty = +data.poverty;
+    data.healthcare = +data.healthcare;
     // console.log(data);
   });
 
 // create scales
   const xScale = d3.scaleLinear()
-    .domain(d3.extent(CensusData, d => d.age))
+    .domain(d3.extent(stateData, d => d.poverty))
     .range([0, width])
     .nice(); 
 
   const yScale = d3.scaleLinear()
-    .domain([6,d3.max(CensusData, d => d.smokes)])
+    .domain([6,d3.max(stateData, d => d.healthcare)])
     .range([height, 0])
     .nice();
 
@@ -50,16 +52,20 @@ d3.csv("assets/data/data.csv").then(function(CensusData) {
   const yAxis = d3.axisLeft(yScale);
 
   // append axes to the chartGroup
-  chartGroup.append("g").attr("transform", `translate(0, ${height})`).call(xAxis);
-  chartGroup.append("g").call(yAxis); 
+  chartGroup.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(xAxis);
+
+  chartGroup.append("g")
+    .call(yAxis); 
 
 //generate the scatter plot
 chartGroup.selectAll("circle")
-.data(CensusData)
+.data(stateData)
 .enter()
 .append("circle")
-.attr("cx", d=>xScale(d.age))
-.attr("cy", d=>yScale(d.smokes))
+.attr("cx", d=>xScale(d.poverty))
+.attr("cy", d=>yScale(d.healthcare))
 .attr("r", "10")
 .attr("stroke-width", "1")
 .classed("stateCircle", true)
@@ -68,12 +74,12 @@ chartGroup.selectAll("circle")
 // add text to the datapoints
 chartGroup.append("g")
   .selectAll('text')
-  .data(CensusData)
+  .data(stateData)
   .enter()
   .append("text")
   .text(d=>d.abbr)
-  .attr("x",d=>xScale(d.age))
-  .attr("y",d=>yScale(d.smokes))
+  .attr("x",d=>xScale(d.poverty))
+  .attr("y",d=>yScale(d.healthcare))
   .classed(".stateText", true)
   .attr("font-family", "sans-serif")
   .attr("text-anchor", "middle")
@@ -83,3 +89,24 @@ chartGroup.append("g")
   .attr("alignment-baseline", "central");
 
 // add axes titles
+chartGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left + 40)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .attr("class", "axisText")
+    .style("fill", "black")
+    .style("font", "20px sans-serif")
+    .style("font-weight", "bold")
+    .text("Lacks Healthcare (%)");
+
+chartGroup.append("text")
+    .attr("transform", `translate(${width / 2}, ${height + margin.top + 13})`)
+    .attr("class", "axisText")
+    .style("font", "20px sans-serif")
+    .style("font-weight", "bold")
+    .text("Poverty (%)");
+
+  }).catch(function(error) {
+  console.log(error);
+});
