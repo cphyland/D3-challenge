@@ -81,3 +81,5 @@ chartGroup.append("g")
   .attr("font-size", "10px")
   .style("font-weight", "bold")
   .attr("alignment-baseline", "central");
+
+// add axes titles
