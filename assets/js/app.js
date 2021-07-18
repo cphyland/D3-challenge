@@ -5,7 +5,7 @@ var svgHeight = 500;
 var margin = {
   top: 20,
   right: 40,
-  bottom: 80,
+  bottom: 60,
   left: 100
 };
 
@@ -43,7 +43,7 @@ d3.csv("assets/data/data.csv").then(function(stateData) {
     .nice(); 
 
   const yScale = d3.scaleLinear()
-    .domain([6,d3.max(stateData, d => d.healthcare)])
+    .domain([3,d3.max(stateData, d => d.healthcare)])
     .range([height, 0])
     .nice();
 
