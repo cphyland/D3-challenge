@@ -1,4 +1,4 @@
-// @TODO: YOUR CODE HERE!
+// SEt up chart
 var svgWidth = 960;
 var svgHeight = 500;
 
@@ -13,9 +13,9 @@ var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
 // Create an SVG wrapper, append an SVG group that will hold our chart,
-// and shift the latter by left and top margins.
+
 var svg = d3
-  .select(".chart")
+  .select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
@@ -25,58 +25,12 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 
-// ****************************************************
+// Import and format data 
 
-// Initial Params
-var chosenXAxis = "poverty";  
+d3.csv("assets/data/data.csv").then(function(CensusData) {
+  CensusData.forEach(function(data) {
+    data.age = +data.age;
+    data.smokes = +data.smokes;
+    // console.log(data);
+  });
 
-// ********* Make poverty the DEFAULT X-AXIS above  ************
-
-// function used for updating x-scale var upon click on axis label
-function xScale(data, chosenXAxis) {
-    // create scales on the x-axis
-    var xLinearScale = d3.scaleLinear()
-      .domain([d3.min(data, d => d[chosenXAxis]) * 0.8,  // setting the left x-axis val to smaller than smallest data point
-        d3.max(data, d => d[chosenXAxis]) * 1.2 // setting the right x-axis val to larger than largest ''
-      ])
-      .range([0, width]);
-  
-    return xLinearScale;
-  
-}
-
-// function used for updating xAxis var upon click on axis label
-function renderAxes(newXScale, xAxis) {
-    var bottomAxis = d3.axisBottom(newXScale); // bottomAxis is the final x-axis var
-  
-    xAxis.transition()
-      .duration(1000)
-      .call(bottomAxis);
-  
-    return xAxis;
-}
-
-// function used for updating circles group with a transition to
-// new circles 
-
-function renderCircles(circlesGroup, newXScale, chosenXAxis) {
-
-    circlesGroup.transition()
-      .duration(1000)
-      .attr("cx", d => newXScale(d[chosenXAxis]));
-  
-    return circlesGroup;
-}
-//***line80 on act 12 */
-// function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, circlesGroup) {
-
-    var label;
-  
-    if (chosenXAxis === "poverty") {
-      label = "Hair Length:";
-    }
-    else {
-      label = "# of Albums:";
-    }
-  
