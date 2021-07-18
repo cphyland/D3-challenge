@@ -64,3 +64,20 @@ chartGroup.selectAll("circle")
 .attr("stroke-width", "1")
 .classed("stateCircle", true)
 .attr("opacity", 0.75);
+
+// add text to the datapoints
+chartGroup.append("g")
+  .selectAll('text')
+  .data(CensusData)
+  .enter()
+  .append("text")
+  .text(d=>d.abbr)
+  .attr("x",d=>xScale(d.age))
+  .attr("y",d=>yScale(d.smokes))
+  .classed(".stateText", true)
+  .attr("font-family", "sans-serif")
+  .attr("text-anchor", "middle")
+  .attr("fill", "white")
+  .attr("font-size", "10px")
+  .style("font-weight", "bold")
+  .attr("alignment-baseline", "central");
