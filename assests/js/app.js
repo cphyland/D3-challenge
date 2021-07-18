@@ -44,3 +44,11 @@ const xScale = d3.scaleLinear()
     .domain([6,d3.max(CensusData, d => d.smokes)])
     .range([height, 0])
     .nice();
+
+// create axes
+const xAxis = d3.axisBottom(xScale);
+  const yAxis = d3.axisLeft(yScale);
+
+  // append axes to the chartGroup
+  chartGroup.append("g").attr("transform", `translate(0, ${height})`).call(xAxis);
+  chartGroup.append("g").call(yAxis); 
